@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:cache="http://www.springframework.org/schema/cache"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/cache
+    http://www.springframework.org/schema/cache/spring-cache-4.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+    <context:component-scan 
+       base-package="com.ding.cache.redis"/>
+           <context:property-placeholder location="src/main/java/com/ding/cache/redis/redis.properties" />    
+ 
+    <!-- 启用缓存注解功能，这个是必须的，否则注解不会生效，另外，该注解一定要声明在spring主配置文件中才会生效 -->    
+      
+     <!-- redis 相关配置 -->    
+     <bean id="jedisConfig" class="redis.clients.jedis.JedisPoolConfig">    
+        <property name="maxActive" value="${redis_max_active}"></property>  
+        <property name="maxIdle" value="${redis_max_idle}"></property>  
+        <property name="maxWait" value="${redis_max_wait}"></property>  
+        <property name="testOnBorrow" value="${redis_test_on_borrow}"></property>    
+     </bean>    
+  
+     <bean id="JedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"  >
+         <property name="hostName" value="${redis_addr}"></property>  
+        <property name="poolConfig" ref="jedisConfig"></property>    
+</bean>    
+     <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">    
+         <property name="connectionFactory" ref="JedisConnectionFactory" />    
+     </bean>    
+      
+   
+ </beans>

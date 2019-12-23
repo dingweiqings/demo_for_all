@@ -1,0 +1,61 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:cache="http://www.springframework.org/schema/cache"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/cache
+    http://www.springframework.org/schema/cache/spring-cache-4.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-4.0.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">    
+         <!-- 启动注解驱动的spring MVC功能,注册请求url和注解POJO类方法的映射-->
+<mvc:annotation-driven 
+       ></mvc:annotation-driven>
+ <context:annotation-config />
+ <context:component-scan base-package="com.ding" >
+ </context:component-scan>
+     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+        <property name="prefix" value="views/" />      <!-- 前缀 -->
+        <property name="suffix" value=".jsp" />   <!-- 后缀 -->
+    </bean>
+  <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"></bean>
+    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">  
+        <property name="mappings">  
+            <props>  
+                <prop key="/hello1.do">testController</prop>  
+                <prop key="/a.do">testController</prop>  
+                <prop key="/httpHandlerAdapter">testController</prop>
+            </props>  
+        </property>  
+</bean>  
+<bean class="org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter"></bean> 
+<bean id="testController"  class="com.ding.controller.TestController"></bean>  
+ <bean id="httpHandlerAdapter"  class="com.ding.controller.TestHttpRequestHandlerAdapter"></bean>
+    
+          <!-- 校验器，配置validator
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="providerClass" value="org.hibernate.validator.HibernateValidator"></property>
+        <property name="validationMessageSource" ref="validationMessageSource"></property>
+    </bean>
+     -->
+
+    <!-- springmvc提供的简单异常处理器 -->
+<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+     <!-- 定义默认的异常处理页面 -->
+    <property name="defaultErrorView" value="error"/>
+    <!-- 定义异常处理页面用来获取异常信息的变量名，也可不定义，默认名为exception --> 
+    <property name="exceptionAttribute" value="ex"/>
+    <!-- 定义需要特殊处理的异常，这是重要点 --> 
+    <property name="exceptionMappings">
+        <props>
+            <prop key="com.ding.exception.UserException">userError</prop>
+        </props>
+        <!-- 还可以定义其他的自定义异常 -->
+    </property>
+</bean>
+</beans>
