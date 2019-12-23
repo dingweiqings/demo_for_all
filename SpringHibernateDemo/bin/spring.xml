@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="storeData" class="com.ding.pac.StoreData">
+		<property name="Employee" ref="employee" />
+	</bean>
+ <bean id="employee" class="com.ding.pac.Employee">
+		<property name="id" value="2000" />
+		<property name="firstName" value="firstNameSpring" />
+		<property name="lastName" value="lastNameSpring" />
+	</bean>
+
+</beans>
